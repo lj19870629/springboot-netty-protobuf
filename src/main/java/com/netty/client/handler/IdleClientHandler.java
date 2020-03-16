@@ -70,8 +70,9 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 	 */
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		final EventLoop eventLoop = ctx.channel().eventLoop();  
-		eventLoop.schedule(() -> nettyClient.doConnect(new Bootstrap(), eventLoop), 10L, TimeUnit.SECONDS);  
+		final EventLoop eventLoop = ctx.channel().eventLoop();
+		final EventLoopGroup eventLoopGroup = ctx.channel().eventLoop().parent();
+		eventLoop.schedule(() -> nettyClient.doConnect(new Bootstrap(), eventLoopGroup), 10L, TimeUnit.SECONDS);
 		super.channelInactive(ctx);  
 	}
 
